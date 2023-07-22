@@ -1,61 +1,44 @@
+// Trie 树
 #include<iostream>
 using namespace std;
-const int N = 100010;
-int idx; // 各个节点的编号，根节点编号为0
-int son[N][26];//Trie 树本身
-//cnt[x] 表示：以 编号为 x 为结尾的字符串的个数
-int cnt[N];
+const int N = 1e5+10;
 
-int n;
-
-void insert(string s){
-    int p = 0;//指向根节点
-    for(int i = 0; i < s.size(); i++){
-        //将当前字符转换成数字（a->0, b->1,...）
-        int u = s[i] - 'a';
-        //如果数中不能走到当前字符
-        //为当前字符创建新的节点，保存该字符
-        if(!son[p][u])
-            // 新节点编号为 idx + 1
-            son[p][u] = ++idx;
-        p = son[p][u];
+int q[N][26],idx,cnt[N];
+void fun_I(string c){
+    int h=0;
+    for(int i=0;i<c.size();i++){
+        int x = c[i]-'a';
+        if(q[h][x]==0){
+            q[h][x] = ++idx;
+        }
+        h = q[h][x];
     }
-    //这个时候，p 等于字符串 s 的尾字符所对应的 idx
-    //cnt[p] 保存的是字符串 s 出现的次数
-    //故 cnt[p] ++
-    cnt[p] ++;
+    cnt[h]++;
 }
-
-int query(string s){
-    int p = 0;//指向根节点
-    for(int i = 0; i < s.size(); i++){
-        //将当前字符转换成数字（a->0, b->1,...）
-        int u = s[i] - 'a';
-        //如果走不通了，即树中没有保存当前字符
-        //则说明树中不存在该字符串
-        if(!son[p][u]) 
+int fun_Q(string c){
+    int h=0;
+    for(int i=0;i<c.size();i++){
+        int x = c[i]-'a';
+        if(q[h][x]==0){
             return 0;
-        //指向下一个节点
-        p = son[p][u];
+        }
+        h = q[h][x];
     }
-    //循环结束的时候，p 等于字符串 s 的尾字符所对应的 idx
-    // cnt[p] 就是字符串 s 出现的次数
-    return cnt[p];
+    return cnt[h];
 }
-
 int main(){
-    cin >> n;
-    string s;
-    char q;
+    int n;
+    cin>>n;
+    char i;
+    string x;
     while(n--){
-        cin >> q >> s;
-        if(q == 'I'){
-            //插入操作
-            insert(s);
+        cin>>i>>x;
+        if(i=='I'){
+            fun_I(x);
+        }else{
+            cout<<fun_Q(x)<<endl;
         }
-        else{
-            //查询操作
-            cout << query(s) << endl;
-        }
+
     }
+    return 0;
 }

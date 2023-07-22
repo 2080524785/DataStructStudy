@@ -2,7 +2,7 @@
 
 # ```Introduction```
 
-> ## This project just contains the course of my studyings of ***datastruct***.
+> ## This project just contains the course of my studyings of ***datastruct***
 
 # ```Algorithm Template```
 

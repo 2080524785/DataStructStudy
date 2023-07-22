@@ -37,3 +37,41 @@ int main(){
 
 }
 ```
+
+> ## ***Tree***
+>
+* ### Trie
+
+```C++
+// Trie 树
+#include<iostream>
+using namespace std;
+const int N = 1e5+10;
+
+int q[N][M],idx;
+void fun_I(param c){
+    int h=0;
+    for(int i=0;i<c.size();i++){
+        // TODO: x=? , the second index in array
+        if(!q[h][x]) q[h][x] = ++idx;
+        h = q[h][x];
+    }
+}
+int fun_Q(param c){
+    int h=0;
+    for(int i=0;i<c.size();i++){
+        // TODO: x=? , the second index in array, usually it is same with the previous TODO;
+        if(!q[h][x]) return 0;
+        h = q[h][x];
+    }
+    //TODO: return result
+}
+int main(){
+    int n;
+    cin>>n;
+    while(n--){
+        //TODO: input params,and carry out the previous function
+    }
+    return 0;
+}
+```

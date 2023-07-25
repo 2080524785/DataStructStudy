@@ -89,7 +89,7 @@ const int N = 1e5+10;
 int p[N],size[N];
 int n,m;
 int find(int x){
-    if(x!=p[x]) p[x] = find(p[x]);
+    if(x!=p[x]) p[x] = find(p[x]); // for path compression
     return p[x];
 }
 void merge(int a,int b){
@@ -114,3 +114,88 @@ int main(){
     return 0;
 }
 ```
+
+* ### Zjnu Stadium
+
+作者：YY_ocean
+
+链接：https://juejin.cn/post/7181755545844449317
+```cpp
+//三合一的并查集模板：
+//1、朴素版的并查集
+//2、维护size【即维护集合中点的数量】
+//3、维护集合内的节点到根节点的距离
+struct UF {
+
+    std::vector<int> p, _dist, _size;
+
+    UF(int n) 
+    : p(n)        //存储每个点的祖宗节点
+    , _dist(n, 0) //维护当前到祖宗节点距离的数组
+    , _size(n, 1) //维护当前的集合中的点的个数的数组（1是因为已经有自己了）
+    { 
+        //初始化并查集
+        //假定节点编号为：1~n
+        for(int i = 1; i <= n; i++) p[i] = i;
+    }
+    
+    //路径压缩优化
+    //顺带维护距离
+    int find(int x) 
+    {
+        if (x == p[x]) return p[x];
+
+        //先记录祖宗
+        int root = find(p[x]);
+
+        //加上父亲的距离
+        _dist[x] += _dist[p[x]];
+
+        //指向祖宗
+        return p[x] = root;
+    }
+
+    //判断祖宗节点是否为同一个
+    //即 判断是否为同一个祖宗
+    bool same(int x, int y) 
+    { 
+        return find(x) == find(y); 
+    }
+
+    //合并并查集
+    bool merge(int x, int y) 
+    {
+        x = find(x);
+        y = find(y);
+
+        if (x == y) return false;
+
+        //本来d[y]（即 祖宗节点 到 祖宗节点的距离）等于0
+        //现在它指向新祖宗的距离 就是 合并到新集合中 的 新集合中的元素个数
+        _dist[y] += _size[x];
+
+        _size[x] += _size[y];
+
+        //将 y节点所在的集合 合并到 x节点的集合上
+        //【即 将y节点的祖宗 变为 x节点的祖宗】
+        p[y] = x;
+
+        return true;
+    }
+
+    //表示祖宗节点所在集合中的点的数量
+    int size(int x) 
+    { 
+        return _size[find(x)]; 
+    }
+
+    //查询两点之间相差几个人，不在一列返回-1
+    int dist(int x, int y) 
+    {
+        if (!same(x, y)) return -1;
+
+        return abs(p[x] - p[y]) - 1;
+    }
+};
+```
+

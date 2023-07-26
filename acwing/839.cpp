@@ -4,50 +4,46 @@ using namespace std;
 const int N=10;
 int p[N],h[N],ph[N];
 int n,r=0,cnt=0;
-
-void upgrade(int i){
+void heap_swap(int a,int b){
+    swap(ph[h[a]],ph[h[b]]);
+    swap(p[a],p[b]);
+    swap(h[a],h[b]);
+}
+void down(int i){
     int t = i;
     if(2*i<=r&&p[2*i]<p[i]) t = 2*i;
     if(2*i+1<=r&&p[t]>p[2*i+1]) t = 2*i+1;
     if(t!=i){
-        swap(p[i],p[t]);
-        swap(h[i],h[t]);
-        // swap(ph[h[i]],ph[h[t]]);
-        upgrade(t);
+        heap_swap(t,i);
+        down(t);
     }
 }
+
 void up(int i)
 {
     while(i/2&&p[i/2]>p[i])
     {
-        swap(p[i/2],p[i]);
-        swap(h[i/2],h[i]);
+        heap_swap(i/2,i);
         i/=2;
     }
 }
 void insert(int x){
-    p[++r]=x;
-    h[r]=++cnt;
+    ph[++cnt] = ++r;
+    h[r] = cnt;
+    p[r] = x;
     up(r);
-    upgrade(1);
 }
 void del(){
-    swap(p[1],p[r]);
-    swap(h[1],h[r]);
+    heap_swap(1,r);
     r--;
-    upgrade(1);
+    down(1);
 }
 void del_num(int k){
-    int i=1;
-    for(;i<=r;i++){
-        if(h[i]==k) break;
-    }
-    if(i>r) return;
-    for(;i<r;i++){
-        p[i] = p[i+1];
-        h[i] = h[i+1];
-    }
+    k = ph[k];
+    heap_swap(k,r);
     r--;
+    up(k);
+    down(k);
     // swap(p[i],p[r]);
     // swap(h[i],h[r]);
     // r--;
@@ -55,12 +51,11 @@ void del_num(int k){
 
 }
 void update(int k,int x){
-    int i=1;
-    for(;i<=r;i++){
-        if(h[i]==k) break;
-    }
-    if(i>r) return;
-    p[i] = x;
+    k = ph[k];
+    p[k] = x;
+    up(k);
+    down(k);
+
 }
 
 int main(){

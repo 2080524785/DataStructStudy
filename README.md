@@ -159,7 +159,8 @@ int main(){
 
 作者：YY_ocean
 
-链接：https://juejin.cn/post/7181755545844449317
+链接：<https://juejin.cn/post/7181755545844449317>
+
 ```cpp
 //三合一的并查集模板：
 //1、朴素版的并查集
@@ -237,5 +238,43 @@ struct UF {
         return abs(p[x] - p[y]) - 1;
     }
 };
+```
+
+> ## ***Graph and Tree***
+>
+* ### **Adjacency list**
+
+作者：yxc
+
+链接：<https://www.acwing.com/blog/content/405/>
+
+```cpp
+// 对于每个点k，开一个单链表，存储k所有可以走到的点。h[k]存储这个单链表的头结点
+int h[N], e[N], ne[N], idx;
+
+// 添加一条边a->b
+void add(int a, int b)
+{
+    e[idx] = b, ne[idx] = h[a], h[a] = idx ++ ;
+}
+
+// 初始化
+idx = 0;
+memset(h, -1, sizeof h);
+```
+
+* ### **DFS**
+  
+```cpp
+int dfs(int u)
+{
+    st[u] = true; // st[u] 表示点u已经被遍历过
+
+    for (int i = h[u]; i != -1; i = ne[i])
+    {
+        int j = e[i];
+        if (!st[j]) dfs(j);
+    }
+}
 ```
 

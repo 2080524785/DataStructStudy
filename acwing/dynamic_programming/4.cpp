@@ -10,7 +10,7 @@ int main(){
         int a,b,s;
         cin>>a>>b>>s;
         while(s--)
-            for(int j=1;j<=m;j++)
+            for(int j=m;j>=a;j--)
                 f[j] = max(f[j],f[j-a]+b);
     }
     cout<<f[m];

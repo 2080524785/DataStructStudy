@@ -17,6 +17,5 @@ int main(){
         }
         mx = max(mx,f[i]);
     }
-    cout<<mx<<endl;
     return 0;
 }
